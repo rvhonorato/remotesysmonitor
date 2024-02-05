@@ -1,0 +1,164 @@
+//! # Monitoring Application
+//!
+//! This crate provides a monitoring application that runs commands on remote servers and sends results to Slack.
+//! It supports various checks, including ping, load, temperature, and custom scripts, and is configurable via a YAML file.
+//!
+//! ## Usage
+//!
+//! To use this application, you need to:
+//! 1. Create a `config.yaml` file with your servers and checks.
+//! 2. Set the `SLACK_HOOK_URL` environment variable to your Slack webhook URL.
+//! 3. Run the application with the path to your configuration file as the argument.
+//!
+//! ```no_run
+//! cargo run -- /path/to/your/config.yaml
+//! ```
+//!
+//! ## Features
+//!
+//! - Monitor multiple servers with SSH support.
+//! - Perform checks: ping, load, temperature, and more.
+//! - Report results directly to a Slack channel.
+//!
+//! ## Configuration
+//!
+//! The application is configured through a YAML file. Here's an example configuration:
+//!
+//! ```yaml
+//! servers:
+//!   - name: "Server 1"
+//!     host: "192.168.1.1"
+//!     user: "user"
+//!     private_key: "/path/to/private/key"
+//!     checks:
+//!       ping: ["example.com", "google.com"]
+//! ```
+//!
+//! ## Contributing
+//!
+//! Contributions are welcome! Please submit pull requests or open issues for bugs and feature requests on GitHub.
+
+pub mod checks;
+pub mod config;
+pub mod slack;
+pub mod ssh;
+pub mod utils;
+use crate::config::Check;
+
+use std::{env, vec};
+
+/// Entry point of the monitoring application.
+///
+/// This function performs the following steps:
+/// 1. Reads the configuration file path from the command line arguments.
+/// 2. Loads the configuration from the specified path.
+/// 3. Retrieves the Slack webhook URL from an environment variable.
+/// 4. Iterates over each server defined in the configuration, creating SSH sessions and executing specified checks.
+/// 5. Collects the results of all checks into a payload.
+/// 6. Posts the payload to a Slack channel using the webhook URL.
+///
+/// # Command Line Arguments
+///
+/// The application expects a single command line argument specifying the path to the configuration file.
+///
+/// # Environment Variables
+///
+/// - `SLACK_HOOK_URL`: The webhook URL for posting messages to Slack. This must be set before running the application.
+///
+/// # Errors
+///
+/// This function returns an error if:
+/// - The configuration file path is not provided as a command line argument.
+/// - The configuration file cannot be loaded.
+/// - The `SLACK_HOOK_URL` environment variable is not set.
+/// - An SSH session cannot be created for any of the servers.
+/// - An unknown check type is encountered in the configuration.
+///
+/// # Exit Codes
+///
+/// The application exits with code 1 if:
+/// - The configuration file path is not provided.
+/// - The `SLACK_HOOK_URL` environment variable is not set.
+///
+/// # Examples
+///
+/// Run the application by specifying the path to the configuration file:
+/// ```sh
+/// cargo run -- /path/to/config.yaml
+/// ```
+///
+/// Ensure the `SLACK_HOOK_URL` environment variable is set before running:
+/// ```sh
+/// export SLACK_HOOK_URL='https://hooks.slack.com/services/...'
+/// ```
+///
+/// # Note
+///
+/// The function aggregates all check results into a single message payload, which is then posted to Slack.
+/// It sorts checks for each server alphabetically by their names before execution, ensuring a consistent
+/// order in the Slack message. Each check's result is separated by new lines in the final Slack message.
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Get the configuration file path from the command line
+    let args: Vec<String> = env::args().collect();
+    let config_path = match args.get(1) {
+        Some(path) => path,
+        None => {
+            eprintln!("Usage: {} <config_path>", args[0]);
+            std::process::exit(1);
+        }
+    };
+
+    let config = config::load_config(config_path)?;
+
+    let slack_hook_url = match env::var("SLACK_HOOK_URL") {
+        Ok(url) => url,
+        Err(_) => {
+            eprintln!("SLACK_HOOK_URL environment variable not set");
+            std::process::exit(1);
+        }
+    };
+
+    let mut payload: Vec<String> = vec![];
+
+    for server in config.servers {
+        let sess = ssh::create_session(
+            server.host.as_str(),
+            server.port,
+            server.user.as_str(),
+            server.private_key.as_str(),
+        )?;
+
+        if let Some(checks) = server.checks {
+            let mut sorted_checks: Vec<(&String, &Check)> = checks.iter().collect();
+            sorted_checks.sort_by(|a, b| a.0.cmp(b.0));
+            for (_check_name, check_details) in sorted_checks {
+                let result = match check_details {
+                    Check::Ping { url } => checks::ping(server.host.as_str(), url),
+                    Check::Temperature { sensor } => checks::temperature(&sess, sensor.as_str()),
+                    Check::Load { interval } => {
+                        checks::load(&sess, server.name.as_str(), *interval)
+                    }
+                    Check::NumberOfSubfolders { path } => {
+                        checks::number_of_folders(&sess, server.name.as_str(), path)
+                    }
+                    Check::CustomCommand { command } => checks::custom_command(&sess, command),
+                    Check::ListOldDirectories { loc, cutoff } => {
+                        checks::list_old_directories(&sess, loc, *cutoff)
+                    }
+                    _ => return Err("Unknown check".into()),
+                };
+
+                payload.push(result);
+            }
+        }
+    }
+
+    let flatten: Vec<String> = payload
+        .iter()
+        .flat_map(|p| p.split('\n').map(|s| s.to_string()))
+        .collect();
+
+    slack::post_to_slack(slack_hook_url.as_str(), flatten.join("\n").as_str());
+
+    Ok(())
+}

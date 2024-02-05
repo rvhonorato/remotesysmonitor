@@ -1,0 +1,29 @@
+servers:
+  - name: name-of-your-server
+    host: myserver.nl
+    port: 22
+    user: rodrigo
+    private_key: /home/rodrigo/.ssh/id_ed25519
+    checks:
+      ping:
+        url:
+          - /
+      load:
+        interval: 15
+      number_of_subfolders:
+        path:
+          - /path/full/of/subfolders
+      custom_command:
+        command: cd /some/path && ./some_script.sh
+      list_old_directories:
+        loc: /path/full/of/old/directories
+        cutoff: 2 # days
+
+  - name: raspeberryPi
+    host: ip.of.your.raspberry.pi
+    port: 22
+    user: rodrigo
+    private_key: /home/rodrigo/.ssh/id_ed25519
+    checks:
+      temperature:
+        sensor: /sys/bus/w1/devices/28-00000b694311/w1_slave
