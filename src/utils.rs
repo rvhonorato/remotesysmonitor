@@ -27,3 +27,28 @@ pub fn make_pretty_timestamp() -> String {
     let formatted = now.format("%d/%b/%y %H:%M %Z").to_string();
     formatted
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_make_pretty_timestamp_not_empty() {
+        let timestamp = make_pretty_timestamp();
+        assert!(!timestamp.is_empty(), "Timestamp should not be empty");
+    }
+
+    #[test]
+    fn test_make_pretty_timestamp_format() {
+        let timestamp = make_pretty_timestamp();
+        // This is a simplistic check and might need to be adjusted based on the format you expect
+        assert!(
+            timestamp.contains('/'),
+            "Timestamp should contain '/' indicating date format"
+        );
+        assert!(
+            timestamp.contains(':'),
+            "Timestamp should contain ':' indicating time format"
+        );
+    }
+}
