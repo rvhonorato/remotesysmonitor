@@ -1,15 +1,23 @@
 # monitor
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a01b6cdccbe646eaa3afff5323358985)](https://app.codacy.com/gh/rvhonorato/monitor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![test](https://github.com/rvhonorato/monitor/actions/workflows/test.yml/badge.svg)](https://github.com/rvhonorato/monitor/actions/workflows/test.yml)
+
 This is a small command-line utility that runs some checks on remote servers and posts the results to a Slack channel.
 
-## Installation
+[Check the documentation for a comprehensive explanation](https://www.rvhonorato.me/monitor/monitor/index.html) of how this tool works and also for a [full list of checks](https://www.rvhonorato.me/monitor/monitor/checks/index.html).
+
+## TL:DR
+
+### Install
 
 ```bash
-git clone https://github.com/rvhonorato/monitor.git && cd monitor
-cargo install --path .
+git clone https://github.com/rvhonorato/monitor.git && cd monitor && \
+  cargo install --path .
 ```
 
-## Usage
+### Execute
 
 ```bash
 SLACK_HOOK_URL=<your-slack-hook-url> monitor configuration.yaml
@@ -51,4 +59,6 @@ servers:
         sensor: /sys/bus/w1/devices/28-00000b694311/w1_slave
 ```
 
-For a full list of checks, see the [documentation](https://www.rvhonorato.me/monitor/monitor/checks/index.html).
+It might make sense to configure a cron job to run this command periodically.
+
+***
