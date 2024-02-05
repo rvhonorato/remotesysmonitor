@@ -50,3 +50,5 @@ servers:
       temperature:
         sensor: /sys/bus/w1/devices/28-00000b694311/w1_slave
 ```
+
+For a full list of checks, see the [documentation](https://www.rvhonorato.me/monitor/monitor/checks/index.html).
