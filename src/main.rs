@@ -44,8 +44,21 @@ pub mod slack;
 pub mod ssh;
 pub mod utils;
 use crate::config::Check;
+use clap::Parser;
 
 use std::{env, vec};
+
+#[derive(Parser)]
+#[command(author, version, about)]
+struct Args {
+    config: String,
+    #[clap(short, long)]
+    /// Post a check to Slack even if there is no ❌ in the checks
+    full: bool,
+    #[clap(short, long)]
+    /// Print the output of the checks in stdout
+    print: bool,
+}
 
 /// Entry point of the monitoring application.
 ///
@@ -98,17 +111,9 @@ use std::{env, vec};
 /// It sorts checks for each server alphabetically by their names before execution, ensuring a consistent
 /// order in the Slack message. Each check's result is separated by new lines in the final Slack message.
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Get the configuration file path from the command line
-    let args: Vec<String> = env::args().collect();
-    let config_path = match args.get(1) {
-        Some(path) => path,
-        None => {
-            eprintln!("Usage: {} <config_path>", args[0]);
-            std::process::exit(1);
-        }
-    };
+    let cli = Args::parse();
 
-    let config = config::load_config(config_path)?;
+    let config = config::load_config(cli.config.as_str())?;
 
     let slack_hook_url = match env::var("SLACK_HOOK_URL") {
         Ok(url) => url,
@@ -158,7 +163,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .flat_map(|p| p.split('\n').map(|s| s.to_string()))
         .collect();
 
-    slack::post_to_slack(slack_hook_url.as_str(), flatten.join("\n").as_str());
+    if cli.full || flatten.iter().any(|s| s.contains("❌")) {
+        slack::post_to_slack(slack_hook_url.as_str(), flatten.join("\n").as_str());
+    } else if cli.print {
+        println!("{}", flatten.join("\n"));
+    } else {
+        println!("No ❌ found in checks, not posting to Slack. Use --full to post anyway and --help for more options.");
+    }
 
     Ok(())
 }
