@@ -19,13 +19,29 @@ git clone https://github.com/rvhonorato/monitor.git && cd monitor && \
 
 ### Execute
 
+Check the output of the `monitor --help` command for a list of available options.
+
+```bash
+$ monitor -h
+Usage: monitor [OPTIONS] <CONFIG>
+
+Arguments:
+  <CONFIG>
+
+Options:
+  -f, --full     Post a check to Slack even if there is no ❌ in the checks
+  -p, --print    Print the output of the checks in stdout
+  -h, --help     Print help
+  -V, --version  Print version
+```
+
+You need to define `SLACK_HOOK_URL` as an environment variable with the URL of the Slack webhook you want to use and a path to the configuration file.
+
 ```bash
 SLACK_HOOK_URL=<your-slack-hook-url> monitor configuration.yaml
 ```
 
-You need to define `SLACK_HOOK_URL` as an environment variable with the URL of the Slack webhook you want to use.
-
-The only argument is the path to a YAML file with the configuration. The file should look like this:
+The configuration file should look like this:
 
 ```yaml
 servers:
@@ -61,4 +77,11 @@ servers:
 
 It might make sense to configure a cron job to run this command periodically.
 
-***
+```bash
+# Run every 10 minutes, it will only post to Slack if one of the checks has ❌
+*/10 * * * * SLACK_HOOK_URL=<your-slack-hook-url> monitor configuration.yaml
+
+# Post a full report to Slack at 8, 12, 16 and 20 hours
+## Running with -f will post to Slack even if there is no ❌ in the checks
+0 8,12,16,20 * * * SLACK_HOOK_URL=<your-slack-hook-url> monitor -f configuration.yaml
+```
