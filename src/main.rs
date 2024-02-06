@@ -163,7 +163,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .flat_map(|p| p.split('\n').map(|s| s.to_string()))
         .collect();
 
-    if cli.full || flatten.iter().any(|s| s.contains("❌")) {
+    if cli.full || flatten.iter().any(|s| s.contains('❌')) {
         slack::post_to_slack(slack_hook_url.as_str(), flatten.join("\n").as_str());
     } else if cli.print {
         println!("{}", flatten.join("\n"));
