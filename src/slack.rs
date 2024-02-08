@@ -50,3 +50,11 @@ pub fn post_to_slack(slack_hook_url: &str, payload: &str) {
         Err(x) => eprintln!("ERR: {:?}", x),
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    #[ignore] // TODO
+    fn test_post_to_slack() {}
+}

@@ -69,3 +69,15 @@ pub fn create_session(
 
     Ok(sess)
 }
+
+#[cfg(test)]
+mod test {
+
+    #[test]
+    #[ignore] // Heavily relies on external resources
+    fn test_create_session() {}
+
+    #[test]
+    #[ignore] // Heavily relies on external resources
+    fn test_run_ssh_command() {}
+}

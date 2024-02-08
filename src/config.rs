@@ -116,3 +116,11 @@ pub fn load_config(file_path: &str) -> Result<Config, Box<dyn std::error::Error>
     let config: Config = serde_yaml::from_str(&config_str)?;
     Ok(config)
 }
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    #[ignore] // TODO
+    fn test_load_config() {}
+}

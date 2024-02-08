@@ -351,6 +351,14 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore] // TODO
+    fn test_number_of_folder() {}
+
+    #[test]
+    #[ignore] // TODO
+    fn test_load() {}
+
+    #[test]
     fn test_ping() {
         let mut server = mockito::Server::new();
 
@@ -378,4 +386,16 @@ mod tests {
         // Check if there ❌ is in the result
         assert!(result.contains("❌"));
     }
+
+    #[test]
+    #[ignore] // TODO
+    fn test_temperature() {}
+
+    #[test]
+    #[ignore] // TODO
+    fn test_custom_command() {}
+
+    #[test]
+    #[ignore] // TODO
+    fn test_list_old_directories() {}
 }
