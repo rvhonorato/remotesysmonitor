@@ -138,7 +138,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             sorted_checks.sort_by(|a, b| a.0.cmp(b.0));
             for (_check_name, check_details) in sorted_checks {
                 let result = match check_details {
-                    Check::Ping { url } => checks::ping(server.host.as_str(), url),
+                    Check::Ping { url } => {
+                        checks::ping(&("https://".to_owned() + server.host.as_str()), url)
+                    }
                     Check::Temperature { sensor } => checks::temperature(&sess, sensor.as_str()),
                     Check::Load { interval } => {
                         checks::load(&sess, server.name.as_str(), *interval)

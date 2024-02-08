@@ -164,7 +164,7 @@ pub fn load(sess: &Session, server_name: &str, interval: u16) -> String {
 pub fn ping(host: &str, url: &[String]) -> String {
     let mut result = vec![];
     url.iter().for_each(|u| {
-        let loc = format!("https://{}{}", host, u);
+        let loc = format!("{}{}", host, u);
         match get(loc.as_str()) {
             Ok(response) => {
                 if response.status() == StatusCode::OK {
@@ -344,4 +344,38 @@ pub fn list_old_directories(sess: &Session, loc: &str, cutoff: u16) -> String {
         return result.join("\n");
     }
     format!("✅ directories older than {} days in `{}`", cutoff, loc)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_ping() {
+        let mut server = mockito::Server::new();
+
+        let host = server.url();
+        let _m = server.mock("GET", "/test").with_status(200).create();
+
+        let urls = vec![String::from("/test")];
+
+        let result = ping(host.as_str(), &urls);
+        // Check if there ✅ is in the result
+        assert!(result.contains("✅"));
+
+        let result = ping("does-not-exist", &urls);
+        // Check if there ❌ is in the result
+        println!("{}", result);
+        assert!(result.contains("❌"));
+    }
+
+    #[test]
+    fn test_ping_error() {
+        let host = "localhost";
+        let urls = vec![String::from("/test")];
+
+        let result = ping(host, &urls);
+        // Check if there ❌ is in the result
+        assert!(result.contains("❌"));
+    }
 }
