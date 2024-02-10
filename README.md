@@ -85,3 +85,20 @@ It might make sense to configure a cron job to run this command periodically.
 ## Running with -f will post to Slack even if there is no ❌ in the checks
 0 8,12,16,20 * * * SLACK_HOOK_URL=<your-slack-hook-url> monitor -f configuration.yaml
 ```
+
+
+## Development
+
+There is a `.devcontainer` configuration for VSCode, so you can use it to develop the project. It will setup a development environment and also configure a SSH server to test the checks that require a remote server.
+
+Once inside the dev-container you can tweak the `conf/conf.dev.yaml` file to your needs and run the project with:
+
+```
+SLACK_HOOK_URL="" cargo run -- -p conf/conf.dev.yaml
+```
+
+Test it with:
+
+```
+cargo test
+```
