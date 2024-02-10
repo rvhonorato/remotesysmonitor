@@ -369,12 +369,12 @@ mod tests {
 
         let result = ping(host.as_str(), &urls);
         // Check if there ✅ is in the result
-        assert!(result.contains("✅"));
+        assert!(result.contains('✅'));
 
         let result = ping("does-not-exist", &urls);
         // Check if there ❌ is in the result
         println!("{}", result);
-        assert!(result.contains("❌"));
+        assert!(result.contains('❌'));
     }
 
     #[test]
@@ -384,7 +384,7 @@ mod tests {
 
         let result = ping(host, &urls);
         // Check if there ❌ is in the result
-        assert!(result.contains("❌"));
+        assert!(result.contains('❌'));
     }
 
     #[test]
