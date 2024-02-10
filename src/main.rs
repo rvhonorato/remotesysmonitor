@@ -45,6 +45,7 @@ pub mod ssh;
 pub mod utils;
 use crate::config::Check;
 use clap::Parser;
+use log::info;
 
 use std::{env, vec};
 
@@ -111,8 +112,11 @@ struct Args {
 /// It sorts checks for each server alphabetically by their names before execution, ensuring a consistent
 /// order in the Slack message. Each check's result is separated by new lines in the final Slack message.
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    env_logger::init();
+
     let cli = Args::parse();
 
+    info!("Loading configuration from {}", cli.config.as_str());
     let config = config::load_config(cli.config.as_str())?;
 
     let slack_hook_url = match env::var("SLACK_HOOK_URL") {
@@ -165,10 +169,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .flat_map(|p| p.split('\n').map(|s| s.to_string()))
         .collect();
 
+    if cli.print {
+        println!("{}", flatten.join("\n"));
+    }
+
     if cli.full || flatten.iter().any(|s| s.contains('❌')) {
         slack::post_to_slack(slack_hook_url.as_str(), flatten.join("\n").as_str());
-    } else if cli.print {
-        println!("{}", flatten.join("\n"));
     } else {
         println!("No ❌ found in checks, not posting to Slack. Use --full to post anyway and --help for more options.");
     }
