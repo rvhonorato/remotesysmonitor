@@ -1,0 +1,20 @@
+servers:
+  - name: dev
+    host: localhost
+    port: 2222
+    user: vscode
+    private_key: /home/vscode/.ssh/id_rsa
+    checks:
+      ping:
+        url:
+          - /
+      load:
+        interval: 15
+      number_of_subfolders:
+        path:
+          - /workspaces/monitor/
+      # custom_command:
+      #   command: cd /home/vscode && ./some_script.sh
+      list_old_directories:
+        loc: /workspaces/monitor/
+        cutoff: 2 # days

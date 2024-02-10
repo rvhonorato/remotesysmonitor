@@ -1,0 +1,17 @@
+{
+  "name": "Rust",
+  "image": "mcr.microsoft.com/devcontainers/rust:1-1-bullseye",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {},
+    "ghcr.io/devcontainers/features/git": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "GitHub.copilot"
+      ]
+    }
+  }
+}
