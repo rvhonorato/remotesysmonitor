@@ -1,3 +1,4 @@
+use log::error;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -112,8 +113,14 @@ pub enum Check {
 /// - The file's contents cannot be read.
 /// - The YAML parsing fails due to invalid syntax or other parsing issues.
 pub fn load_config(file_path: &str) -> Result<Config, Box<dyn std::error::Error>> {
-    let config_str = std::fs::read_to_string(file_path)?;
-    let config: Config = serde_yaml::from_str(&config_str)?;
+    let config_str = std::fs::read_to_string(file_path).map_err(|e| {
+        error!("Could not read configuration file {}: {}", file_path, e);
+        Box::<dyn std::error::Error>::from(e)
+    })?;
+    let config: Config = serde_yaml::from_str(&config_str).map_err(|e| {
+        error!("Could not unmarshal: {}", e);
+        Box::<dyn std::error::Error>::from(e)
+    })?;
     Ok(config)
 }
 
