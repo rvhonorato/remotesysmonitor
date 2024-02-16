@@ -3,16 +3,20 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a01b6cdccbe646eaa3afff5323358985)](https://app.codacy.com/gh/rvhonorato/remotesysmonitor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![test](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml/badge.svg)](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml)
+![Crates.io Version](https://img.shields.io/crates/v/remotesysmonitor)
 
 This is a small command-line tool that runs some checks on remote servers and posts the results to a Slack channel.
+
+Check the [project's website](https://www.rvhonorato.me/remotesysmonitor) for a full list of [available checks](https://www.rvhonorato.me/remotesysmonitor/remotesysmonitor/checks) and how to configure them.
 
 ## TL:DR
 
 ### Install
 
+Make sure you have Rust and Cargo installed, if not follow the instructions [here](https://www.rust-lang.org/tools/install).
+
 ```bash
-git clone https://github.com/rvhonorato/remotesysmonitor.git && cd remotesysmonitor && \
-  cargo install --path .
+cargo install remotesysmonitor
 ```
 
 ### Execute
@@ -84,7 +88,6 @@ It might make sense to configure a cron job to run this command periodically.
 0 8,12,16,20 * * * SLACK_HOOK_URL=<your-slack-hook-url> remotesysmonitor -f configuration.yaml
 ```
 
-
 ## Development
 
 There is a `.devcontainer` configuration for VSCode, so you can use it to develop the project. It will setup a development environment and also configure a SSH server to test the checks that require a remote server.
@@ -93,10 +96,4 @@ Once inside the dev-container you can tweak the `conf/conf.dev.yaml` file to you
 
 ```text
 SLACK_HOOK_URL="" cargo run -- -p conf/conf.dev.yaml
-```
-
-Test it with:
-
-```text
-cargo test
 ```

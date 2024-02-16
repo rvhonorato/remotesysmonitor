@@ -8,6 +8,7 @@ license = "GPL-3.0-or-later"
 keywords = ["monitoring", "remote", "ssh"]
 categories = ["command-line-utilities", "network-programming"]
 readme = "README.md"
+website = "https://www.rvhonorato.me/remotesysmonitor"
 include = ["**/*.rs", "Cargo.toml"]
 
 [dependencies]
