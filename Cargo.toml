@@ -1,14 +1,14 @@
 [package]
-name = "monitor"
+name = "remotesysmonitor"
 version = "0.1.0"
 edition = "2021"
-description = "A simple tool for monitoring remote servers using SSH."
-repository = "https://github.com/rvhonorato/monitor"
+description = "A tool for monitoring remote servers."
+repository = "https://github.com/rvhonorato/remotesysmonitor"
 license = "GPL-3.0-or-later"
 keywords = ["monitoring", "remote", "ssh"]
 categories = ["command-line-utilities", "network-programming"]
 readme = "README.md"
-homepage = "https://github.com/rvhonorato/monitor"
+homepage = "https://github.com/rvhonorato/remotesysmonitor"
 include = ["**/*.rs", "Cargo.toml"]
 
 [dependencies]

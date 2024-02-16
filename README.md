@@ -1,29 +1,29 @@
-# monitor
+# RemoteSysMonitor
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a01b6cdccbe646eaa3afff5323358985)](https://app.codacy.com/gh/rvhonorato/monitor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![test](https://github.com/rvhonorato/monitor/actions/workflows/test.yml/badge.svg)](https://github.com/rvhonorato/monitor/actions/workflows/test.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a01b6cdccbe646eaa3afff5323358985)](https://app.codacy.com/gh/rvhonorato/remotesysmonitor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![test](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml/badge.svg)](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml)
 
-This is a small command-line utility that runs some checks on remote servers and posts the results to a Slack channel.
+This is a small command-line tool that runs some checks on remote servers and posts the results to a Slack channel.
 
-[Check the documentation for a comprehensive explanation](https://www.rvhonorato.me/monitor/monitor/index.html) of how this tool works and also for a [full list of checks](https://www.rvhonorato.me/monitor/monitor/checks/index.html).
+[Check the documentation for a comprehensive explanation](https://www.rvhonorato.me/remotesysmonitor/remotesysmonitor/index.html) of how this tool works and also for a [full list of checks](https://www.rvhonorato.me/remotesysmonitor/remotesysmonitor/checks/index.html).
 
 ## TL:DR
 
 ### Install
 
 ```bash
-git clone https://github.com/rvhonorato/monitor.git && cd monitor && \
+git clone https://github.com/rvhonorato/remotesysmonitor.git && cd remotesysmonitor && \
   cargo install --path .
 ```
 
 ### Execute
 
-Check the output of the `monitor --help` command for a list of available options.
+Check the output of the `remotesysmonitor --help` command for a list of available options.
 
 ```bash
-$ monitor -h
-Usage: monitor [OPTIONS] <CONFIG>
+$ remotesysmonitor -h
+Usage: remotesysmonitor [OPTIONS] <CONFIG>
 
 Arguments:
   <CONFIG>
@@ -38,7 +38,7 @@ Options:
 You need to define `SLACK_HOOK_URL` as an environment variable with the URL of the Slack webhook you want to use and a path to the configuration file.
 
 ```bash
-SLACK_HOOK_URL=<your-slack-hook-url> monitor configuration.yaml
+SLACK_HOOK_URL=<your-slack-hook-url> remotesysmonitor configuration.yaml
 ```
 
 The configuration file should look like this:
@@ -79,11 +79,11 @@ It might make sense to configure a cron job to run this command periodically.
 
 ```bash
 # Run every 10 minutes, it will only post to Slack if one of the checks has ❌
-*/10 * * * * SLACK_HOOK_URL=<your-slack-hook-url> monitor configuration.yaml
+*/10 * * * * SLACK_HOOK_URL=<your-slack-hook-url> remotesysmonitor configuration.yaml
 
 # Post a full report to Slack at 8, 12, 16 and 20 hours
 ## Running with -f will post to Slack even if there is no ❌ in the checks
-0 8,12,16,20 * * * SLACK_HOOK_URL=<your-slack-hook-url> monitor -f configuration.yaml
+0 8,12,16,20 * * * SLACK_HOOK_URL=<your-slack-hook-url> remotesysmonitor -f configuration.yaml
 ```
 
 
@@ -93,12 +93,12 @@ There is a `.devcontainer` configuration for VSCode, so you can use it to develo
 
 Once inside the dev-container you can tweak the `conf/conf.dev.yaml` file to your needs and run the project with:
 
-```
+```text
 SLACK_HOOK_URL="" cargo run -- -p conf/conf.dev.yaml
 ```
 
 Test it with:
 
-```
+```text
 cargo test
 ```

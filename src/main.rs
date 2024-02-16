@@ -1,28 +1,28 @@
-//! # Monitoring Application
+//! # Remote System Monitoring Application
 //!
-//! This crate provides a monitoring application that runs commands on remote servers and sends results to Slack.
-//! It supports various checks, including ping, load, temperature, and custom scripts, and is configurable via a YAML file.
+//! `RemoteSysMonitor` is a comprehensive tool designed for monitoring remote servers. It executes specified commands on remote servers via SSH and can forward the results to Slack for notifications. The application supports a variety of checks, such as ping, system load, temperature readings, and the execution of custom scripts. Configuration is managed through a YAML file, allowing for easy setup and customization.
 //!
 //! ## Usage
 //!
-//! To use this application, you need to:
-//! 1. Create a `config.yaml` file with your servers and checks.
-//! 2. Set the `SLACK_HOOK_URL` environment variable to your Slack webhook URL.
-//! 3. Run the application with the path to your configuration file as the argument.
+//! To utilize `RemoteSysMonitor`, follow these steps:
+//! 1. Prepare a `config.yaml` file according to your monitoring requirements, detailing the servers to be monitored along with the specific checks for each.
+//! 2. Set the `SLACK_HOOK_URL` environment variable to your Slack webhook URL to enable Slack notifications.
+//! 3. Launch the application, providing the path to your configuration file as the argument.
 //!
+//! Example command to run the application:
 //! ```no_run
 //! cargo run -- /path/to/your/config.yaml
 //! ```
 //!
-//! ## Features
+//! ## Key Features
 //!
-//! - Monitor multiple servers with SSH support.
-//! - Perform checks: ping, load, temperature, and more.
-//! - Report results directly to a Slack channel.
+//! - **Server Monitoring**: Facilitates monitoring of multiple servers through SSH.
+//! - **Diverse Checks**: Supports various checks, including ping, system load, temperature readings, and execution of custom scripts.
+//! - **Slack Integration**: Enables direct reporting of monitoring results to a specified Slack channel for real-time alerts.
 //!
-//! ## Configuration
+//! ## Configuration Guide
 //!
-//! The application is configured through a YAML file. Here's an example configuration:
+//! `RemoteSysMonitor` relies on a YAML file for configuration, allowing you to specify the servers to monitor and the checks to perform on each. Below is an example of how the configuration file might look:
 //!
 //! ```yaml
 //! servers:
@@ -32,11 +32,16 @@
 //!     private_key: "/path/to/private/key"
 //!     checks:
 //!       ping: ["example.com", "google.com"]
+//!       load: 5
+//!       temperature: "/sys/class/thermal/thermal_zone0/temp"
+//!       custom_command: "custom_script.sh"
 //! ```
 //!
-//! ## Contributing
+//! ## Contributing to RemoteSysMonitor
 //!
-//! Contributions are welcome! Please submit pull requests or open issues for bugs and feature requests on GitHub.
+//! Contributions to `RemoteSysMonitor` are highly encouraged and appreciated. Whether it's through submitting pull requests with code enhancements, bug fixes, or feature additions, or by reporting issues and suggesting improvements, your input helps make `RemoteSysMonitor` better for everyone.
+//!
+//! Please feel free to submit pull requests or open issues on the project's GitHub repository for any bugs you encounter or enhancements you believe are worth adding.
 
 pub mod checks;
 pub mod config;

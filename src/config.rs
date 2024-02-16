@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 /// Configuration for the monitoring application.
 ///
-/// Contains all the necessary settings to connect to and monitor remote servers.
+/// Contains all the necessary settings to connect to and remotesysmonitor remote servers.
 /// This configuration is typically loaded from a YAML file.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
@@ -48,7 +48,7 @@ pub enum Check {
         /// Identifier for the temperature sensor.
         sensor: String,
     },
-    /// Monitor the load average over a specified interval.
+    /// RemoteSysMonitor the load average over a specified interval.
     Load {
         /// Time interval in seconds over which to calculate the load average.
         interval: u16,

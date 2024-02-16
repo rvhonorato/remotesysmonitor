@@ -12,9 +12,9 @@ servers:
         interval: 15
       number_of_subfolders:
         path:
-          - /workspaces/monitor/
+          - /workspaces/remotesysmonitor/
       # custom_command:
       #   command: cd /home/vscode && ./some_script.sh
       list_old_directories:
-        loc: /workspaces/monitor/
+        loc: /workspaces/remotesysmonitor/
         cutoff: 2 # days
