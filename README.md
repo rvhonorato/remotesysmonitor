@@ -1,9 +1,9 @@
 # RemoteSysMonitor
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Crates.io Version](https://img.shields.io/crates/v/remotesysmonitor)](https://crates.io/crates/remotesysmonitor)
+[![Crates.io](https://img.shields.io/crates/l/remotesysmonitor)](https://crates.io/crates/remotesysmonitor)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a01b6cdccbe646eaa3afff5323358985)](https://app.codacy.com/gh/rvhonorato/remotesysmonitor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![test](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml/badge.svg)](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml)
-![Crates.io Version](https://img.shields.io/crates/v/remotesysmonitor)
 
 This is a small command-line tool that runs some checks on remote servers and posts the results to a Slack channel.
 
