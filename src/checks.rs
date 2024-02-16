@@ -61,14 +61,14 @@ pub fn number_of_folders(
     paths
         .iter()
         .map(|path| {
-            let command = format!("find {} -maxdepth 1 -type d | wc -l", path);
+            let command = format!("find {} -maxdepth 1 -type d | tail -n +2 | wc -l", path);
             ssh::run_ssh_command(sess, &command).map_or_else(
                 |err| format!("❌ Error: {}", err),
                 |output| {
                     let count: usize = output.trim().parse().unwrap_or(0);
                     match count {
                         0 => format!("✅ No folders @ `{}:{}`", server_name, path),
-                        1 => format!("❌ {} folder @ `{}:{}`", count, server_name, path),
+                        1 => format!("✅ {} folder @ `{}:{}`", count, server_name, path),
                         _ if count >= *max_folders as usize => {
                             format!("❌ {} folders @ `{}:{}`", count, server_name, path)
                         }
