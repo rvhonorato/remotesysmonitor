@@ -52,7 +52,12 @@ use ssh2::Session;
 /// on the remote server. It handles command execution failures by including an error message in the
 /// output string. This function does not catch panics from parsing the command output, which should
 /// be considered when interpreting the results.
-pub fn number_of_folders(sess: &Session, server_name: &str, paths: &[String]) -> String {
+pub fn number_of_folders(
+    sess: &Session,
+    server_name: &str,
+    paths: &[String],
+    max_folders: &i32,
+) -> String {
     paths
         .iter()
         .map(|path| {
@@ -63,8 +68,11 @@ pub fn number_of_folders(sess: &Session, server_name: &str, paths: &[String]) ->
                     let count: usize = output.trim().parse().unwrap_or(0);
                     match count {
                         0 => format!("✅ No folders @ `{}:{}`", server_name, path),
-                        1 => format!("❌ 1 folder @ `{}:{}`", server_name, path),
-                        _ => format!("❌ {} folders @ `{}:{}`", count, server_name, path),
+                        1 => format!("❌ {} folder @ `{}:{}`", count, server_name, path),
+                        _ if count >= *max_folders as usize => {
+                            format!("❌ {} folders @ `{}:{}`", count, server_name, path)
+                        }
+                        _ => format!("✅ {} folders @ `{}:{}`", count, server_name, path),
                     }
                 },
             )
@@ -213,13 +221,13 @@ pub fn ping(host: &str, urls: &[String]) -> String {
             Ok(response) => {
                 let status = response.status();
                 if status.is_success() {
-                    results.push_str(&format!("✅ {}", request_url));
+                    results.push_str(&format!("✅ {}\n", request_url));
                 } else {
-                    results.push_str(&format!("❌ {} == `{}`", request_url, status));
+                    results.push_str(&format!("❌ {} == `{}`\n", request_url, status));
                 }
             }
             Err(e) => results.push_str(&format!(
-                "❌ {} is not accessible\n```{}```",
+                "❌ {} is not accessible\n```{}```\n",
                 request_url, e
             )),
         }

@@ -57,6 +57,9 @@ pub enum Check {
     NumberOfSubfolders {
         /// Paths to check for subfolders.
         path: Vec<String>,
+        /// Maximum number of subfolders allowed.
+        /// If the number of subfolders exceeds this value, an alert is triggered.
+        max_folders: i32,
     },
     /// Check the age of the files in a list against a maximum age.
     ListAge {

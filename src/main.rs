@@ -149,8 +149,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     Check::Load { interval } => {
                         checks::load(&sess, server.name.as_str(), *interval)
                     }
-                    Check::NumberOfSubfolders { path } => {
-                        checks::number_of_folders(&sess, server.name.as_str(), path)
+                    Check::NumberOfSubfolders { path, max_folders } => {
+                        checks::number_of_folders(&sess, server.name.as_str(), path, max_folders)
                     }
                     Check::CustomCommand { command } => checks::custom_command(&sess, command),
                     Check::ListOldDirectories { loc, cutoff } => {
