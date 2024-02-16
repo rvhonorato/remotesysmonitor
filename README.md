@@ -6,8 +6,6 @@
 
 This is a small command-line tool that runs some checks on remote servers and posts the results to a Slack channel.
 
-[Check the documentation for a comprehensive explanation](https://www.rvhonorato.me/remotesysmonitor/remotesysmonitor/index.html) of how this tool works and also for a [full list of checks](https://www.rvhonorato.me/remotesysmonitor/remotesysmonitor/checks/index.html).
-
 ## TL:DR
 
 ### Install
