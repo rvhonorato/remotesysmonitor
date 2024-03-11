@@ -435,17 +435,17 @@ pub fn custom_command(sess: &Session, command: &str) -> String {
 ///
 /// # Note
 ///
-/// This function relies on the `find` command's `-ctime` option to determine the age of directories,
-/// which is based on the time of the last inode change. This may differ from the time of the last
-/// modification to the files within the directory. Ensure that the remote server's environment and
-/// filesystem support the commands and options used.
+/// This function relies on the `find` command's `-mtime` option to determine the age of directories,
+/// which is based on the time of the last modification to the directory's contents. This approach focuses
+/// on when files within the directory were last added, removed, or renamed, rather than when their metadata
+/// was last changed. Ensure that the remote server's environment and filesystem support the commands and
+/// options used.
 ///
 /// Error handling in this function logs command execution errors to standard error and returns an
 /// empty string. This approach is suitable for command-line applications but may need adjustment for
 /// use in other contexts where error logging or handling might be implemented differently.
-
 pub fn list_old_directories(sess: &Session, loc: &str, cutoff: u16) -> String {
-    let command = format!("find {} -maxdepth 1 -type d -ctime +{}", loc, cutoff);
+    let command = format!("find {} -maxdepth 1 -type d -mtime +{}", loc, cutoff);
     let output = match ssh::run_ssh_command(sess, &command) {
         Ok(output) => output,
         Err(e) => {
