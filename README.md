@@ -1,6 +1,7 @@
 # RemoteSysMonitor
 
 [![Crates.io Version](https://img.shields.io/crates/v/remotesysmonitor)](https://crates.io/crates/remotesysmonitor)
+![Crates.io Total Downloads](https://img.shields.io/crates/d/remotesysmonitor)
 [![Crates.io](https://img.shields.io/crates/l/remotesysmonitor)](https://crates.io/crates/remotesysmonitor)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a01b6cdccbe646eaa3afff5323358985)](https://app.codacy.com/gh/rvhonorato/remotesysmonitor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![test](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml/badge.svg)](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml)
