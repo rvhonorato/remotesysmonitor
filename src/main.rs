@@ -135,12 +135,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut payload: Vec<String> = vec![];
 
     for server in config.servers {
-        let sess = ssh::create_session(
+        let sess = match ssh::create_session(
             server.host.as_str(),
             server.port,
             server.user.as_str(),
             server.private_key.as_str(),
-        )?;
+        ) {
+            Ok(sess) => sess,
+            Err(e) => {
+                eprintln!("Failed to create SSH session for {}: {}", server.name, e);
+                let error_msg = format!("❌ could not start SSH session with {}", server.name);
+                payload.push(error_msg);
+                continue;
+            }
+        };
 
         if let Some(checks) = server.checks {
             let mut sorted_checks: Vec<(&String, &Check)> = checks.iter().collect();
