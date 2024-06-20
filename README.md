@@ -68,7 +68,7 @@ servers:
         loc: /path/full/of/old/directories
         cutoff: 2 # days
 
-  - name: raspeberryPi
+  - name: raspberryPi
     host: ip.of.your.raspberry.pi
     port: 22
     user: rodrigo
