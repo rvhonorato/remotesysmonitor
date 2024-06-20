@@ -135,6 +135,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut payload: Vec<String> = vec![];
 
     for server in config.servers {
+        // Add the server name to the payload
+        payload.push(format!("🖥️ {} (`{}`)", server.name, server.host));
+
         let sess = match ssh::create_session(
             server.host.as_str(),
             server.port,
@@ -175,6 +178,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 payload.push(result);
             }
         }
+
+        // Add a separator between servers
+        payload.push("##########".to_string());
     }
 
     let flatten: Vec<String> = payload
