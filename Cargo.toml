@@ -24,6 +24,7 @@ chrono = "0"
 clap = { version = "4", features = ["derive"] }
 log = "0"
 env_logger = "0"
+h2 = "^0.4.5"
 
 [dev-dependencies]
 mockito = "1"
