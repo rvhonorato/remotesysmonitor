@@ -8,8 +8,17 @@ use std::collections::HashMap;
 /// This configuration is typically loaded from a YAML file.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
+    /// General configuration settings.
+    pub general: Option<General>,
     /// A list of servers to be monitored.
     pub servers: Vec<Server>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+/// Represents the general configuration settings.
+pub struct General {
+    /// The separator used in the configuration.
+    pub separator: String,
 }
 
 /// Represents a single server to be monitored.
@@ -124,6 +133,7 @@ pub fn load_config(file_path: &str) -> Result<Config, Box<dyn std::error::Error>
         error!("Could not unmarshal: {}", e);
         Box::<dyn std::error::Error>::from(e)
     })?;
+    println!("{:?}", config);
     Ok(config)
 }
 

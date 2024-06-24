@@ -1,3 +1,6 @@
+general:
+  separator: ""
+
 servers:
   - name: dev
     host: localhost
@@ -5,16 +8,6 @@ servers:
     user: vscode
     private_key: /home/vscode/.ssh/id_rsa
     checks:
-      ping:
-        url:
-          - /
       load:
         interval: 15
-      number_of_subfolders:
-        path:
-          - /workspaces/remotesysmonitor/
-      # custom_command:
-      #   command: cd /home/vscode && ./some_script.sh
-      list_old_directories:
-        loc: /workspaces/remotesysmonitor/
-        cutoff: 2 # days
+
