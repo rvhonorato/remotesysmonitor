@@ -179,8 +179,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
 
-        // Add a separator between servers
-        payload.push("##########".to_string());
+        // Add a separator between servers, if it has been defined
+        match config.general {
+            Some(ref general) => {
+                payload.push(general.separator.repeat(10));
+            }
+            None => payload.push("".to_string()),
+        }
     }
 
     let flatten: Vec<String> = payload
