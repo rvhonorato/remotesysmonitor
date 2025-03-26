@@ -95,11 +95,12 @@ pub fn number_of_folders(
 ///   the output string but does not influence the command execution.
 /// * `interval` - A `u16` specifying the interval for the load average to retrieve. Valid values are 1, 5,
 ///   or 15, corresponding to the standard intervals provided by the `uptime` command for load averages.
+/// * `warning_cutoff` - The maximum value the load can be before an "❌" is triggered
 ///
 /// # Returns
 ///
 /// Returns a `String` formatted with an emoji and the load average for the specified interval. If the load
-/// is greater than 50.0, a "❌" is prefixed, otherwise a "✅". If an error occurs during command execution
+/// is greater than the `warning_cutoff`, a "❌" is prefixed, otherwise a "✅". If an error occurs during command execution
 /// or parsing, an error message is returned.
 ///
 /// # Errors
@@ -113,7 +114,8 @@ pub fn number_of_folders(
 /// let session = // Assume `session` is an established SSH `Session`.
 /// let server_name = "example_server";
 /// let interval = 5; // Specify the interval for load average.
-/// let result = load(&session, server_name, interval);
+/// let warning_cutoff = 50.0;
+/// let result = load(&session, server_name, interval, warning_cutoff);
 /// println!("{}", result);
 /// ```
 ///
@@ -128,7 +130,7 @@ pub fn number_of_folders(
 ///   for all systems. Consider adjusting this threshold based on your system's capacity and typical loads.
 /// - The function currently only supports the fixed intervals of 1, 5, or 15 minutes, as these are the
 ///   standard intervals reported by the `uptime` command.
-pub fn load(sess: &Session, server_name: &str, interval: u16) -> String {
+pub fn load(sess: &Session, server_name: &str, interval: u16, warning_cutoff: f64) -> String {
     let output = match ssh::run_ssh_command(sess, "uptime") {
         Ok(output) => output,
         Err(e) => {
@@ -154,7 +156,7 @@ pub fn load(sess: &Session, server_name: &str, interval: u16) -> String {
 
     match load {
         Some(load) => {
-            let emoji = if load > 50.0 { "❌" } else { "✅" };
+            let emoji = if load > warning_cutoff { "❌" } else { "✅" };
             format!(
                 "{} load {:.2} ({}min) @ {}",
                 emoji, load, interval, server_name

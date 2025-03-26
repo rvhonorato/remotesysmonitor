@@ -61,6 +61,8 @@ pub enum Check {
     Load {
         /// Time interval in seconds over which to calculate the load average.
         interval: u16,
+        /// Cutoff to signal de load as a warning
+        warning_cutoff: f64,
     },
     /// Count the number of subfolders in a specified path.
     NumberOfSubfolders {
