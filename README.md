@@ -6,9 +6,12 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a01b6cdccbe646eaa3afff5323358985)](https://app.codacy.com/gh/rvhonorato/remotesysmonitor/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![test](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml/badge.svg)](https://github.com/rvhonorato/remotesysmonitor/actions/workflows/test.yml)
 
-This is a small command-line tool that runs some checks on remote servers and posts the results to a Slack channel.
+This is a small command-line tool that runs some checks on remote servers and
+posts the results to a Slack channel.
 
-Check the [project's website](https://www.rvhonorato.me/remotesysmonitor) for a full list of [available checks](https://www.rvhonorato.me/remotesysmonitor/remotesysmonitor/checks) and how to configure them.
+Check the [project's website](https://www.rvhonorato.me/remotesysmonitor) for a
+full list of [available checks](https://www.rvhonorato.me/remotesysmonitor/remotesysmonitor/checks)
+and how to configure them.
 
 ## TL:DR
 
@@ -22,7 +25,8 @@ cargo install remotesysmonitor
 
 ### Execute
 
-Check the output of the `remotesysmonitor --help` command for a list of available options.
+Check the output of the `remotesysmonitor --help` command for a list of available
+options.
 
 ```bash
 $ remotesysmonitor -h
@@ -38,7 +42,8 @@ Options:
   -V, --version  Print version
 ```
 
-You need to define `SLACK_HOOK_URL` as an environment variable with the URL of the Slack webhook you want to use and a path to the configuration file.
+You need to define `SLACK_HOOK_URL` as an environment variable with the URL of the
+Slack webhook you want to use and a path to the configuration file.
 
 ```bash
 SLACK_HOOK_URL=<your-slack-hook-url> remotesysmonitor configuration.yaml
@@ -59,6 +64,7 @@ servers:
           - /
       load:
         interval: 15
+        warning_cutoff: 50.0
       number_of_subfolders:
         path:
           - /path/full/of/subfolders
@@ -87,14 +93,4 @@ It might make sense to configure a cron job to run this command periodically.
 # Post a full report to Slack at 8, 12, 16 and 20 hours
 ## Running with -f will post to Slack even if there is no ❌ in the checks
 0 8,12,16,20 * * * SLACK_HOOK_URL=<your-slack-hook-url> remotesysmonitor -f configuration.yaml
-```
-
-## Development
-
-There is a `.devcontainer` configuration for VSCode, so you can use it to develop the project. It will setup a development environment and also configure a SSH server to test the checks that require a remote server.
-
-Once inside the dev-container you can tweak the `conf/conf.dev.yaml` file to your needs and run the project with:
-
-```text
-SLACK_HOOK_URL="" cargo run -- -p conf/conf.dev.yaml
 ```
