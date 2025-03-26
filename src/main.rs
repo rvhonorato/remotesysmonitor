@@ -22,20 +22,7 @@
 //!
 //! ## Configuration Guide
 //!
-//! `RemoteSysMonitor` relies on a YAML file for configuration, allowing you to specify the servers to monitor and the checks to perform on each. Below is an example of how the configuration file might look:
-//!
-//! ```yaml
-//! servers:
-//!   - name: "Server 1"
-//!     host: "192.168.1.1"
-//!     user: "user"
-//!     private_key: "/path/to/private/key"
-//!     checks:
-//!       ping: ["example.com", "google.com"]
-//!       load: 5
-//!       temperature: "/sys/class/thermal/thermal_zone0/temp"
-//!       custom_command: "custom_script.sh"
-//! ```
+//! `RemoteSysMonitor` relies on a YAML file for configuration, allowing you to specify the servers to monitor and the checks to perform on each.
 //!
 //! ## Contributing to RemoteSysMonitor
 //!
