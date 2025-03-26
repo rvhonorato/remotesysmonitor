@@ -19,7 +19,7 @@ ssh2 = "0"
 reqwest = { version = "0.12.4", features = ["blocking"] }
 tokio = { version = "1", features = ["full"] }
 regex = "1"
-slack-hook = "0"
+slack-hook = "0.8"
 chrono = "0"
 clap = { version = "4", features = ["derive"] }
 log = "0"
