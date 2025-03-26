@@ -162,9 +162,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         checks::ping(&("https://".to_owned() + server.host.as_str()), url)
                     }
                     Check::Temperature { sensor } => checks::temperature(&sess, sensor.as_str()),
-                    Check::Load { interval } => {
-                        checks::load(&sess, server.name.as_str(), *interval)
-                    }
+                    Check::Load {
+                        interval,
+                        warning_cutoff,
+                    } => checks::load(&sess, server.name.as_str(), *interval, *warning_cutoff),
                     Check::NumberOfSubfolders { path, max_folders } => {
                         checks::number_of_folders(&sess, server.name.as_str(), path, max_folders)
                     }

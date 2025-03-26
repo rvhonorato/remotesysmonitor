@@ -1,6 +1,6 @@
 [package]
 name = "remotesysmonitor"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 description = "A tool for monitoring remote servers."
 repository = "https://github.com/rvhonorato/remotesysmonitor"
@@ -19,7 +19,7 @@ ssh2 = "0"
 reqwest = { version = "0.12.4", features = ["blocking"] }
 tokio = { version = "1", features = ["full"] }
 regex = "1"
-slack-hook = "0"
+slack-hook = "0.8"
 chrono = "0"
 clap = { version = "4", features = ["derive"] }
 log = "0"
